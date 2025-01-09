@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/outline_border.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <stroke
+        android:color="@android:color/white"
+        android:width="3dp"/> <!-- Ketebalan Outline -->
+    <corners android:radius="4dp" /> <!-- Radius sudut outline -->
+</shape>
