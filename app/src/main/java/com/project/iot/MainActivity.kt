@@ -50,27 +50,33 @@ class MainActivity : AppCompatActivity() {
             databaseReference.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     // Mendapatkan nilai dari sensorData
-                    var parkir1Terisi = true
-                    var parkir2Terisi = true
+                    var parkir1Count = 0
+                    var parkir2Count = 0
 
                     // Iterasi semua anak dari sensorData
                     for (childSnapshot in snapshot.children) {
                         val key = childSnapshot.key // Mendapatkan nama node (A1_1, A1_2, dll.)
                         val value = childSnapshot.getValue(Int::class.java) // Mendapatkan nilai node (1 atau 0)
 
-                        // Tentukan apakah parkir 1 terisi
+                        // Hitung node dengan nilai 0 untuk parkir 1
                         if (key in listOf("A1_1", "A1_2", "A1_3") && value == 0) {
-                            parkir1Terisi = false
+                            parkir1Count++
                         }
 
-                        // Tentukan apakah parkir 2 terisi
+                        // Hitung node dengan nilai 0 untuk parkir 2
                         if (key in listOf("A2_1", "A2_2", "A2_3") && value == 0) {
-                            parkir2Terisi = false
+                            parkir2Count++
                         }
 
                         // Log hasil pembacaan
                         Log.d("Firebase", "Key: $key, Value: $value")
                     }
+
+                    // Tentukan apakah parkir 1 terisi (semua node harus bernilai 0)
+                    val parkir1Terisi = parkir1Count == 3
+
+                    // Tentukan apakah parkir 2 terisi (semua node harus bernilai 0)
+                    val parkir2Terisi = parkir2Count == 3
 
                     // Menentukan warna background parkir dan menampilkan ke UI
                     runOnUiThread {
@@ -92,6 +98,7 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(this@MainActivity, "Data berhasil dibaca", Toast.LENGTH_SHORT).show()
                     }
                 }
+
 
                 override fun onCancelled(error: DatabaseError) {
                     // Handle jika ada error
